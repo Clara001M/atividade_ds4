@@ -1,0 +1,183 @@
+/* reservas.css */
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(fundo.jpg);
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Link para voltar */
+a {
+    font-size: 14px;
+    color: #4CAF50;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo do formulário de cadastro */
+.form-box {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels e inputs do formulário */
+label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* Botão de envio */
+input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilo do select de mesa */
+select {
+    background-color: #fff;
+    cursor: pointer;
+    appearance: none;
+    padding-right: 30px; /* Espaço extra para o ícone de seta */
+}
+
+/* Ícone de seta personalizado para o select */
+select::-ms-expand {
+    display: none;
+}
+
+select:after {
+    content: "▼";
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+}
+
+/* Espaçamento entre campos */
+.form-box div {
+    display: flex;
+    flex-direction: column;
+}
+
+/* reservas.css */
+
+/* Estilo dos cards de reservas */
+#lista-reservas {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid #4CAF50;
+}
+
+.card div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Estilos dos labels dentro dos cards */
+.card label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Botão de exclusão nos cards */
+.rmvBtn {
+    padding: 8px 12px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.rmvBtn:hover {
+    background-color: #e60000;
+}
+
+/* Mensagem quando não há reservas */
+#lista-reservas::before {
+    content: 'Você não possui reservas.';
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+    display: none;
+}
+
+/* Mostrar mensagem se não houver reservas */
+body.no-reservas #lista-reservas::before {
+    display: block;
+}

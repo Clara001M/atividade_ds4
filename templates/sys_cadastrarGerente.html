@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case 1:
+                alert('Erro: Email já registrado.')
+            break;
+        }
+    </script>
+</head>
+<body>
+    <form id="form-cadastrarUsuario" action="/cadastrar/gerente" method="post" class="form-box center" onsubmit="validarCadastroUsuario(event)">
+        <label class="title">Cadastro de Gerente</label>
+        <label for="nome_gerente">Nome do Gerente:</label>
+        <input name="nome_gerente" type="text" required>
+
+        <label for="nome_restaurante">Nome do Restaurante:</label>
+        <input name="nome_restaurante" type="text" required>
+
+        <label for="email">Email:</label>
+        <input name="email" type="email" required>
+
+        <label for="senha">Senha:</label>
+        <input name="senha" type="password" required>
+
+        <label for="confirma">Confirmar Senha:</label>
+        <input name="confirma" type="password" required>
+
+        <input type="submit" value="Cadastrar">
+        <a href="/">Entre por aqui.</a>
+    </form>
+</body>
+</html>

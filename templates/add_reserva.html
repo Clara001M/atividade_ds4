@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Reserva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reservas.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+    <form id="form-cadastrarReserva" action="/cadastrar/reserva" method="post" class="form-box">        
+        <label for="cliente_nome">Nome do cliente:</label>
+        <input name="cliente_nome" type="text" required>
+
+        <label for="cliente_cpf">CPF do cliente:</label>
+        <input name="cliente_cpf" type="text" required>
+
+        <label for="data">Data:</label>
+        <input name="data" type="date" required>
+
+        <label for="hora">Horário:</label>
+        <input name="hora" type="time" required>
+
+        <label for="mesa_id">Escolha uma mesa:</label>
+        <select id="selector_mesa" name="mesa_id" required>
+            <option id="default" value="" disabled selected>Escolha uma mesa.</option>
+        </select>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        const mesas = JSON.parse('{{ mesas | tojson }}');
+
+        function updateSelector(mesas = []) {
+            const selector = document.getElementById('selector_mesa');
+            const defaultOption = selector.querySelector('#default');
+            defaultOption.remove();
+          
+            if (mesas.length > 0) {
+                for (const mesa of mesas) {
+                    const option = document.createElement('option');
+                    option.value = mesa.mesa_id;
+                    option.innerHTML = `${mesa.numero}`;
+
+                    selector.appendChild(option)
+                }
+            } else {
+                defaultOption.innerHTML = 'Você não possui mesas';
+            }
+            selector.prepend(defaultOption)
+        }
+
+        updateSelector(mesas)
+    </script>
+</body>
+</html>

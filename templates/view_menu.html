@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Reserva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menus.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+
+    <form action="/associar-prato-menu" method="post" class="form-box">
+        <label for="prato_id">Adicionar prato:</label>
+        <select id="prato_id_sel" name="prato_id" required>
+            <option id="dfOP_prato" value="" disabled selected>Escolha uma opção</option>
+        </select>
+
+        <label for="menu_id">Ao menu:</label>
+        <select id="menu_id_sel" name="menu_id" required>
+            <option id="dfOP_menu" value="" disabled selected>Escolha uma opção</option>
+        </select>
+
+        <label for="preco">Preço</label>
+        <input name="preco" type="number" step="0.010" required>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+
+    <div id="lista-menus"></div>
+    <form id="form-excluirMenu" action="/deletar/menu" method="post">
+        <input type="hidden" name="menu_id">
+    </form>
+
+    <form id="form-removerPrato" action="/deletar/rel" method="post">
+        <input type="hidden" name="prato_id">
+        <input type="hidden" name="menu_id">
+    </form>
+    
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        const pratos = JSON.parse('{{ pratos | tojson }}');
+        const menus = JSON.parse('{{ menus | tojson }}');
+        const menusPratos = JSON.parse('{{ menusPratos | tojson }}');
+
+        function loadSelects(pratos = [], menus = []) {
+            const selectorPratos = document.getElementById('prato_id_sel');
+            const selectorMenus = document.getElementById('menu_id_sel');
+            const dfOP_Pratos = document.getElementById('dfOP_prato');
+            const dfOP_Menus = document.getElementById('dfOP_menu');
+
+            if (pratos.length > 0) {
+                for (const prato of pratos) {
+                    const option = document.createElement('option');
+                    option.textContent = prato.nome
+                    option.value = prato.prato_id
+                    selectorPratos.appendChild(option);
+                }
+            } else {
+                dfOP_Pratos.textContent = 'Você não possui pratos.'
+            }
+
+            if (menus.length > 0) {
+                for (const menu of menus) {
+                    const option = document.createElement('option');
+                    option.textContent = menu.nome
+                    option.value = menu.menu_id
+                    selectorMenus.appendChild(option);
+                }
+            } else {
+                dfOP_Menus.textContent = 'Você não possui menus.'
+            }
+        }
+
+        loadSelects(pratos, menus)
+
+        function loadMenus(menus = [], pratos = [], menusPratos = []) {
+            const listaMenus = document.getElementById("lista-menus");
+
+            console.log(menus)
+            console.log(pratos)
+            console.log(menusPratos)
+
+            const excluirMenu = (nome, id_menu) => {
+                if (document.getElementById(`mp${id_menu}`).innerHTML != '') {
+                    alert('Você não pode excluir um menu com pratos!');
+                } else {
+                    if (confirm(`Deseja excluir o menu "${nome}"?`)) {
+                        const form = document.getElementById('form-excluirMenu');
+                        const input = form.querySelector('[name="menu_id"]');
+                        input.value = id_menu;
+                        form.submit()
+                    }
+                }
+            }
+
+            const removerPratoDeMenu = (prato_nome, menu_nome, prato_id, menu_id) => {
+                if (confirm(`Deseja remover o prato "${prato_nome}" do menu "${menu_nome}"?`)) {
+                    const form = document.getElementById('form-removerPrato');
+                        const input_pratoId = form.querySelector('[name="prato_id"]');
+                        const input_menuId = form.querySelector('[name="menu_id"]');
+                        input_pratoId.value = prato_id;
+                        input_menuId.value = menu_id;
+                        form.submit()
+                }
+            }
+
+            if (menus.length > 0) {
+                listaMenus.innerHTML = ''
+                for (const menu of menus) {
+                    const newCard = document.createElement('div');
+                    newCard.innerHTML = `
+                        <div>
+                            <label>${menu.nome}</label>
+                            <button class="rmvBtn">Excluir</button>  
+                        </div>
+                        <div class="lista-pratos" id="mp${menu.menu_id}"></div>
+                    `;
+                    newCard.classList = 'card'
+                    newCard.querySelector('.rmvBtn').addEventListener('click', () => excluirMenu(menu.nome, menu.menu_id))
+
+                    const listaPratos = newCard.querySelector('.lista-pratos');
+                    for (const menuPrato of menusPratos) {
+                        if (menuPrato.menu_id == menu.menu_id) {
+                            const pratoCard = document.createElement("div")
+                            const prato = pratos[menuPrato.prato_id-1]
+                            pratoCard.innerHTML = `
+                                <div>
+                                    <label>${prato.nome}</label>
+                                    <label>R$ ${menuPrato.preco}</label>
+                                    </div>
+                                    <button class="rmvBtn">Remover</button>
+                            `;
+
+                            pratoCard.querySelector('.rmvBtn').addEventListener('click', () => removerPratoDeMenu(
+                                prato.nome, menu.nome, prato.prato_id, menu.menu_id
+                            ));
+
+                            listaPratos.appendChild(pratoCard)
+                        }
+                    }
+
+                    listaMenus.appendChild(newCard);
+                }
+            } else {
+                listaMenus.innerHTML = 'Você não possui menus.'
+            }
+        }
+
+        loadMenus(menus, pratos, menusPratos)
+
+    </script>
+</body>
+</html>

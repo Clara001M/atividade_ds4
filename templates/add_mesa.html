@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Mesa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mesa.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+    <form id="form-cadastrarMesa" action="/cadastrar/mesa" method="post" class="form-box">
+        <input type="hidden" name="gerente_id">
+        
+        <label for="numero">Número:</label>
+        <input name="numero" type="text" required>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+    <form id="form-excluirMesa" action="/deletar/mesa" method="post">
+        <input type="hidden" name="mesa_id">
+    </form>
+    <div id="lista-mesas" class="list-box"></div>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case 1:
+                alert('Essa mesa não pode ser excluída, porque possui reserva.')
+            break;
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        
+        const forms = document.getElementById('form-cadastrarMesa');
+        const input_gerente = forms.querySelector('[name="gerente_id"]');
+        input_gerente.value = gerente.gerente_id;
+
+        const mesas = JSON.parse('{{ mesas | tojson }}');
+        console.log(mesas)
+
+        function loadMesas(mesas = [], id="lista-mesas") {
+            const listaMesas = document.getElementById(id);
+
+            const excluirMesa = (id, numero) => {
+                console.log('cls')
+                if (confirm(`Deseja realmente excluir a mesa "${numero}"?`)) {
+                    const excForm = document.getElementById('form-excluirMesa');
+                    excForm.querySelector('[name="mesa_id"]').value = id;
+                    excForm.submit();
+                }
+            }
+
+            if (mesas.length > 0) {
+                listaMesas.innerHTML = ''
+                for (const mesa of mesas) {
+                    const newCard = document.createElement('div');
+                    newCard.classList = 'card'
+                    newCard.innerHTML = `
+                        <div>
+                            <label>Mesa: ${mesa.numero}</label>
+                            <button class="rmvBtn">Excluir</button>
+                        </div>
+                    `
+
+                    newCard.querySelector('.rmvBtn').addEventListener('click', () => excluirMesa(mesa.mesa_id, mesa.numero))
+                    listaMesas.appendChild(newCard)
+                }
+            } else {
+                listaMesas.innerHTML = 'Você não possui mesas'
+            }
+        }
+
+        loadMesas(mesas)
+    </script>
+</body>
+</html>

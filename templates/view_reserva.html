@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Reserva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reservas.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+
+    <div id="lista-reservas"></div>
+    <form id="form-excluirReserva" action="/deletar/reserva" method="post">
+        <input type="hidden" name="reserva_id">
+    </form>
+    
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        const reservas = JSON.parse('{{ reservas | tojson }}');
+
+        function loadReservas(reservas = []) {
+            const listaReservas = document.getElementById("lista-reservas");
+
+            const excluirReserva = (nome, data, reserva_id) => {
+                if (confirm(`Deseja realmente excluir a reserva de\n"${nome}" para "${data}" ?`)) {
+                    const forms = document.getElementById('form-excluirReserva');
+                    const input = forms.querySelector('[name="reserva_id"]');
+                    input.value = reserva_id;
+                    forms.submit()
+                }
+            }
+
+            if (reservas.length > 0) {
+                for (const reserva of reservas) {
+                    const newCard = document.createElement('div');
+                    newCard.classList = 'card'
+                    newCard.innerHTML = `
+                        <div>
+                            <label>Nome: ${reserva.cliente_nome}</label>
+                            <label>CPF: ${reserva.cliente_cpf}</label>
+                            <label>Data: ${reserva.data}</label>
+                            <label>Hora: ${reserva.hora}</label>
+                            <label>Mesa: ${reserva.numero}</label>
+                        </div>
+                        <div>
+                            <button class="rmvBtn">Excluir</button>
+                        </div>
+                    `
+                    newCard.querySelector('.rmvBtn').addEventListener('click', () => excluirReserva(reserva.cliente_nome, reserva.data, reserva.reserva_id))
+
+                    listaReservas.appendChild(newCard)
+                }
+
+            } else {
+                listaReservas.innerHTML = 'Você não possui reservas.'
+            }
+        }
+
+        loadReservas(reservas)
+        // console.log(reservas)
+    </script>
+</body>
+</html>

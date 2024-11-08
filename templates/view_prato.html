@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Reserva</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pratos.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+
+    <div id="lista-pratos"></div>
+    <form id="form-excluirPrato" action="/deletar/prato" method="post">
+        <input type="hidden" name="prato_id">
+    </form>
+    
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        const pratos = JSON.parse('{{ pratos | tojson }}');
+
+        function loadPratos(pratos = []) {
+            const listaPratos = document.getElementById("lista-pratos");
+
+            console.log(pratos)
+
+            const excluirPrato = (nome, id) => {
+                if (confirm(`Deseja excluir o prato "${nome}"?`)) {
+                    const forms = document.getElementById('form-excluirPrato');
+                    const input = forms.querySelector('[name="prato_id"]');
+                    input.value = id;
+                    forms.submit();
+                }
+            }
+
+            if (pratos.length > 0) {
+                listaPratos.innerHTML = ''
+                for (const prato of pratos) {
+                    const newCard = document.createElement('div');
+                    newCard.classList = 'card'
+                    newCard.innerHTML = `
+                        <div>
+                            <label>${prato.nome}</label>
+                            <label>Ingredientes: ${prato.ingredientes}</label>
+                            ${prato.receita != ''? `<label>Receita: ${prato.receita} </label>` : ''}
+                            <button class="rmvBtn">Excluir</button>
+                        <div>
+                    `;
+
+                    newCard.querySelector('.rmvBtn').addEventListener('click', () => excluirPrato(prato.nome, prato.prato_id));
+
+                    listaPratos.appendChild(newCard);
+                }
+            } else {
+                listaPratos.innerHTML = 'Você não possui pratos cadastrados.'
+            }
+        }
+
+        loadPratos(pratos);
+    </script>
+</body>
+</html>

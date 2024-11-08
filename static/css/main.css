@@ -1,0 +1,94 @@
+/* menu.css */
+
+/* Estilo de reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(fundo.jpg);
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Estilo do container principal */
+.box {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+}
+
+/* Sub-caixas de conteúdo */
+.sub-box {
+    background-color: #f0f2f5;
+    padding: 20px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Painel de botões */
+.btn-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+/* Botões */
+button {
+    padding: 8px 12px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Botão de sair */
+.link-btn {
+    padding: 5px 10px;
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.link-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Legendas (legends) */
+legend {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Labels */
+label {
+    font-size: 14px;
+    color: #666;
+}

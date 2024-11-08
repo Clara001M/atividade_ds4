@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Mesa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menus.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+    <form id="form-cadastrarMenu" action="/cadastrar/menu" method="post" class="form-box">
+        <input type="hidden" name="gerente_id">
+        
+        <label for="nome">Nome:</label>
+        <input name="nome" type="text" required>
+
+        <input type="submit" value="Cadastrar">
+    </form>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case 1:
+                alert('Essa mesa não pode ser excluída, porque possui reserva.')
+            break;
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+
+        const gerente = JSON.parse('{{ gerente | tojson }}');
+        
+        const forms = document.getElementById('form-cadastrarMenu');
+        const input_gerente = forms.querySelector('[name="gerente_id"]');
+        input_gerente.value = gerente.gerente_id;
+    </script>
+</body>
+</html>

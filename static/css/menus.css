@@ -1,0 +1,169 @@
+/* menu.css */
+
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(fundo.jpg);
+    background-size: cover;
+    background-position: center;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Link para voltar */
+a {
+    font-size: 14px;
+    color: #4CAF50;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Estilo do formulário de cadastro */
+.form-box {
+    width: 100%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.form-box label {
+    font-size: 14px;
+    color: #555;
+    margin-top: 10px;
+    display: block;
+}
+
+.form-box input[type="text"],
+.form-box input[type="number"],
+.form-box select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-box input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-box input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Estilo dos cards dos menus */
+#lista-menus {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-left: 4px solid #4CAF50;
+}
+
+/* Cabeçalho do menu */
+.card > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Botão de exclusão */
+.rmvBtn {
+    padding: 8px 12px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.rmvBtn:hover {
+    background-color: #e60000;
+}
+
+/* Estilo da lista de pratos dentro dos menus */
+.lista-pratos {
+    padding-left: 15px;
+    border-left: 2px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lista-pratos div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    
+    width: 100%;
+}
+
+.lista-pratos label {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Mensagem quando não há menus */
+#lista-menus::before {
+    content: 'Você não possui menus.';
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    display: block;
+    margin-top: 20px;
+    display: none;
+}
+
+/* Mostrar mensagem se não houver menus */
+body.no-menus #lista-menus::before {
+    display: block;
+}

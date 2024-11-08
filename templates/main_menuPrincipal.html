@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+</head>
+<body>
+    <fieldset class="box center">
+        <fieldset class="sub-box">
+            <legend>Mesas</legend>
+            <div class="btn-panel">
+                <button onclick="goTo('/cadastrar/mesa')">Gerenciar</button>
+                <label id="qntMesas-lbl"></label>
+            </div>
+        </fieldset>
+        <fieldset class="sub-box">
+            <legend>Reservas</legend>
+            <div class="btn-panel">
+                <button onclick="goTo('/cadastrar/reserva')">Cadastrar</button>
+                <button onclick="goTo('/visualizar/reserva')">Visualizar</button>
+                <label id="qntReservas-lbl"></label>
+            </div>
+        </fieldset>
+        <fieldset class="sub-box">
+            <legend>Pratos</legend>
+            <div class="btn-panel">
+                <button onclick="goTo('/cadastrar/prato')">Cadastrar</button>
+                <button onclick="goTo('/visualizar/prato')">Visualizar</button>
+            </div>
+        </fieldset>
+        <fieldset class="sub-box">
+            <legend>Menus</legend>
+            <div class="btn-panel">
+                <button onclick="goTo('/cadastrar/menu')">Cadastrar</button>
+                <button onclick="goTo('/visualizar/menu')">Gerenciar</button>
+            </div>
+        </fieldset>
+        <a href="/logout"><button class="link-btn">Sair</button></a>
+    </fieldset>
+
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            
+        }
+        const qntMesas = JSON.parse('{{ qntMesas | tojson }}');
+        document.getElementById('qntMesas-lbl').textContent = `Mesas Cadastradas: ${qntMesas}`;
+
+        const qntReservas = JSON.parse('{{ qntReservas | tojson }}');
+        document.getElementById('qntReservas-lbl').textContent = `Reservas: ${qntReservas}`;
+    </script>
+</body>
+</html>

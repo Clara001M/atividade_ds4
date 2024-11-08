@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Receita</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pratos.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/navigate.js')}}"></script>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case -1:
+                alert('Cadastro realizado com sucesso!')
+            break;
+        }
+    </script>
+</head>
+<body>
+    <a href="/home">Voltar.</a>
+    <form id="form-cadastrarPrato" action="/cadastrar/prato" method="post" class="form-box">        
+        <input name="gerente_id" type="hidden" required>
+
+        <label for="nome">Nome do prato:</label>
+        <input name="nome" type="text" required>
+
+        <label for="ingredientes">Ingredientes:</label>
+        <input name="ingredientes" type="text" placeholder="Milho,tomate,..." required>
+
+        <label for="receita">Receita:</label>
+        <input name="receita" type="text" placeholder="Descreva aqui (opcional).">
+
+        <input type="submit" value="Cadastrar">
+    </form>
+
+    <script>
+        const gerente = JSON.parse('{{ gerente | tojson}}')
+        document.getElementById('form-cadastrarPrato').querySelector('[name="gerente_id"]').value = gerente.gerente_id;
+    </script>
+</body>
+</html>

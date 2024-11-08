@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css')}}">
+    <script src="{{ url_for('static', filename='js/validate.js')}}"></script>
+    <script>
+        const error = JSON.parse('{{ error | tojson }}');
+        switch(Number(error)) {
+            case 1:
+                alert('Erro: Credenciais não encontradas.')
+            break;
+        }
+    </script>
+</head>
+<body>
+    <form id="form-cadastrarUsuario" action="/" method="post" class="form-box center">
+        <label class="title">Login</label>
+        <div>
+            <label for="email">Email:</label>
+            <input name="email" type="email" required>
+    
+            <label for="senha">Senha:</label>
+            <input name="senha" type="password" required>
+        </div>
+
+        <input type="submit" value="Entrar">
+        <a href="/cadastrar/gerente">Cadastre-se aqui.</a>
+    </form>
+</body>
+</html>
